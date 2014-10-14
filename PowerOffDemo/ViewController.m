@@ -44,8 +44,19 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 
 #pragma mark - CONFIGURE
 - (void)configureSliderContainer {
-    self.sliderContainer = [[UIView alloc] initWithFrame:CGRectMake(kMargin, kSliderVerticalOffsetFromTop, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad)];
-    [self.sliderContainer setBackgroundColor:[UIColor orangeColor]];
+    //  FIXME - need to grab lighter blur from background
+    UIBlurEffect * blur = [UIBlurEffect effectWithStyle: UIBlurEffectStyleLight];
+    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blur];
+//    self.sliderContainer.frame = CGRectMake(kMargin, kSliderVerticalOffsetFromTop, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad);
+    self.sliderContainer = [[UIImageView alloc] initWithImage:self.bgImage.image];
+    self.sliderContainer.frame = CGRectMake(kMargin, kSliderVerticalOffsetFromTop, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad);
+    [self.sliderContainer setContentMode:UIViewContentModeScaleAspectFill];
+    [self.sliderContainer addSubview:blurEffectView];
+    [blurEffectView addVflContrstraints:@"H:|[self]|"];
+    [blurEffectView addVflContrstraints:@"V:|[self]|"];
+
+//    self.sliderContainer = [[UIView alloc] initWithFrame:CGRectMake(kMargin, kSliderVerticalOffsetFromTop, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad)];
+//    [self.sliderContainer setBackgroundColor:[UIColor orangeColor]];
     self.sliderContainer.layer.cornerRadius = (kRadius + kSliderPad) / 2;
     [self.sliderContainer.layer setMasksToBounds:YES];
     [self.view addSubview:self.sliderContainer];
