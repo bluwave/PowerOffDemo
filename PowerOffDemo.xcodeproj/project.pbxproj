@@ -16,6 +16,7 @@
 		3B4277AA19EC3FAD009D8264 /* PowerOffDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B4277A919EC3FAD009D8264 /* PowerOffDemoTests.m */; };
 		3B58A03F19EC41AB0008EBF3 /* UIView+DemoAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B58A03E19EC41AB0008EBF3 /* UIView+DemoAdditions.m */; };
 		3B58A04219EC448A0008EBF3 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B58A04119EC448A0008EBF3 /* placeholder.png */; };
+		3BB7035A19ED023100406731 /* off.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BB7035919ED023100406731 /* off.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		3B58A03D19EC41AB0008EBF3 /* UIView+DemoAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+DemoAdditions.h"; path = "Category/UIView+DemoAdditions.h"; sourceTree = "<group>"; };
 		3B58A03E19EC41AB0008EBF3 /* UIView+DemoAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+DemoAdditions.m"; path = "Category/UIView+DemoAdditions.m"; sourceTree = "<group>"; };
 		3B58A04119EC448A0008EBF3 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = placeholder.png; path = images/placeholder.png; sourceTree = SOURCE_ROOT; };
+		3BB7035919ED023100406731 /* off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = off.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 		3B58A04019EC447F0008EBF3 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				3BB7035919ED023100406731 /* off.png */,
 				3B58A04119EC448A0008EBF3 /* placeholder.png */,
 			);
 			name = images;
@@ -223,6 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B42779919EC3FAD009D8264 /* Main.storyboard in Resources */,
+				3BB7035A19ED023100406731 /* off.png in Resources */,
 				3B58A04219EC448A0008EBF3 /* placeholder.png in Resources */,
 				3B42779E19EC3FAD009D8264 /* LaunchScreen.xib in Resources */,
 				3B42779B19EC3FAD009D8264 /* Images.xcassets in Resources */,
