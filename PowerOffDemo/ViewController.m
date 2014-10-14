@@ -22,6 +22,7 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 @property(nonatomic, strong) UISlider *slider;
 @property(nonatomic, strong) UIImageView *sliderImage;
 @property(nonatomic, strong) UIView *darkOverlay;
+@property(nonatomic, strong) GRSlider *grSlider;
 @end
 
 @implementation ViewController
@@ -43,14 +44,15 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
             self.sliderImage = (UIImageView *) v;
     }
     [self toggleBlurOverlay:YES withCompletionHandler:nil];
-}
 
+    [self animateSlider];
+}
 
 #pragma mark - CONFIGURE
 
 - (void)configureGRSlider {
-    GRSlider * grSlider = [[GRSlider alloc] initWithFrame:CGRectMake(kMargin, 240, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad)];
-    [self.view addSubview:grSlider];
+    self.grSlider = [[GRSlider alloc] initWithFrame:CGRectMake(kMargin, 240, kRadius+kSliderPad, kRadius + kSliderPad)];
+    [self.view addSubview:self.grSlider];
 }
 
 - (void)configureSliderContainer {
@@ -134,6 +136,16 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 }
 
 #pragma mark - HELPERS
+
+- (void)animateSlider {
+    //  FIXME - this needs some cleanup / refinement
+    CGRect dstRect = CGRectMake(kMargin, 240, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad);
+    [UIView animateWithDuration:0.35 delay:0.05 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        self.grSlider.frame = dstRect;
+    } completion:^(BOOL finished) {
+
+    }];
+}
 
 - (void)toggleDarkOverlayWithAlpha:(CGFloat)alpha {
     if (alpha < 0.75)

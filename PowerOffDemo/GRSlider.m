@@ -30,7 +30,6 @@ static const CGFloat GRSliderSpacingFromContainer = 5.0;
     if (_sliderImageView) return _sliderImageView;
 
     for (UIView *v in self.slider.subviews) {
-//        NSLog(@"%s v: %@", __func__, v);
         if ([v isKindOfClass:[UIImageView class]]) {
             _sliderImageView = (UIImageView *) v;
             break;
@@ -41,6 +40,7 @@ static const CGFloat GRSliderSpacingFromContainer = 5.0;
 
 - (void)configureSlider {
     UISlider *slider = self.slider = [[UISlider alloc] initWithFrame:CGRectMake(GRSliderSpacingFromContainer, GRSliderSpacingFromContainer, (self.bounds.size.width - (3* GRSliderSpacingFromContainer)), self.bounds.size.height - (2 * GRSliderSpacingFromContainer))];
+    self.slider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [slider setMinimumTrackImage:[UIImage new] forState:UIControlStateNormal];
     [slider setMaximumTrackImage:[UIImage new] forState:UIControlStateNormal];
     [slider setThumbImage:[UIImage imageNamed:@"off.png"] forState:UIControlStateNormal];
@@ -56,6 +56,7 @@ static const CGFloat GRSliderSpacingFromContainer = 5.0;
 
 - (void)configureBackgroundImageView {
     _backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
+    _backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [_backgroundImageView setBackgroundColor:UIColor.orangeColor];
     [self addSubview:_backgroundImageView];
     [_backgroundImageView.layer setCornerRadius:self.bounds.size.height / 2];
