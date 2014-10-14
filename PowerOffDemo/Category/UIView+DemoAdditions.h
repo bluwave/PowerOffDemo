@@ -12,6 +12,6 @@
 @interface UIView (DemoAdditions)
 
 -(void) debugBorder;
-
 - (NSArray *)addVflContrstraints:(NSString *)vfl;
+- (NSArray *)pinViewToAllSidesOfSuperView;
 @end

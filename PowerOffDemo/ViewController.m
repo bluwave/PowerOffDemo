@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "UIView+DemoAdditions.h"
+#import "GRSlider.h"
 
 static const CGFloat kRadius = 60.0;
 static const CGFloat kSliderPad = 15.0;
@@ -30,7 +31,10 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
     [self configureSliderContainer];
     [self configureSlider];
     [self configureDarkOverlay];
+
+    [self configureGRSlider];
 }
+
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -43,6 +47,12 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 
 
 #pragma mark - CONFIGURE
+
+- (void)configureGRSlider {
+    GRSlider * grSlider = [[GRSlider alloc] initWithFrame:CGRectMake(kMargin, 240, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad)];
+    [self.view addSubview:grSlider];
+}
+
 - (void)configureSliderContainer {
     //  FIXME - need to grab lighter blur from background
     UIBlurEffect * blur = [UIBlurEffect effectWithStyle: UIBlurEffectStyleLight];

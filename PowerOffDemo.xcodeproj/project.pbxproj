@@ -17,6 +17,7 @@
 		3B58A03F19EC41AB0008EBF3 /* UIView+DemoAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B58A03E19EC41AB0008EBF3 /* UIView+DemoAdditions.m */; };
 		3B58A04219EC448A0008EBF3 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B58A04119EC448A0008EBF3 /* placeholder.png */; };
 		3BB7035E19ED047300406731 /* off.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BB7035D19ED047300406731 /* off.png */; };
+		3BB7036119ED897B00406731 /* GRSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB7036019ED897B00406731 /* GRSlider.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,8 @@
 		3B58A03E19EC41AB0008EBF3 /* UIView+DemoAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+DemoAdditions.m"; path = "Category/UIView+DemoAdditions.m"; sourceTree = "<group>"; };
 		3B58A04119EC448A0008EBF3 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = placeholder.png; path = images/placeholder.png; sourceTree = SOURCE_ROOT; };
 		3BB7035D19ED047300406731 /* off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = off.png; path = images/off.png; sourceTree = SOURCE_ROOT; };
+		3BB7035F19ED897B00406731 /* GRSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRSlider.h; sourceTree = "<group>"; };
+		3BB7036019ED897B00406731 /* GRSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRSlider.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +101,8 @@
 				3B42779A19EC3FAD009D8264 /* Images.xcassets */,
 				3B42779C19EC3FAD009D8264 /* LaunchScreen.xib */,
 				3B42778D19EC3FAD009D8264 /* Supporting Files */,
+				3BB7035F19ED897B00406731 /* GRSlider.h */,
+				3BB7036019ED897B00406731 /* GRSlider.m */,
 			);
 			path = PowerOffDemo;
 			sourceTree = "<group>";
@@ -248,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B42779619EC3FAD009D8264 /* ViewController.m in Sources */,
+				3BB7036119ED897B00406731 /* GRSlider.m in Sources */,
 				3B58A03F19EC41AB0008EBF3 /* UIView+DemoAdditions.m in Sources */,
 				3B42779319EC3FAD009D8264 /* AppDelegate.m in Sources */,
 				3B42779019EC3FAD009D8264 /* main.m in Sources */,

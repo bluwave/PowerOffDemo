@@ -28,5 +28,17 @@
     return constraints;
 }
 
+- (NSArray *)pinViewToAllSidesOfSuperView {
+    [self setTranslatesAutoresizingMaskIntoConstraints:NO];
+    NSDictionary *bindings = NSDictionaryOfVariableBindings(self);
+    NSMutableArray *constraints = [NSMutableArray array];
+    if (self.superview) {
+        [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[self]|" options:0 metrics:nil views:bindings]];
+        [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[self]|" options:0 metrics:nil views:bindings]];
+        [self.superview addConstraints:constraints];
+    }
+    return constraints;
+}
+
 
 @end
