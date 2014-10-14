@@ -83,7 +83,7 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 
 - (void)valueChanged:(id)sender {
     UISlider *slider = (UISlider *) sender;
-    self.darkOverlay.alpha = slider.value;
+    [self toggleDarkOverlayWithAlpha:slider.value];
     [UIView animateWithDuration:0.1 delay:0.0 options:UIViewAnimationOptionTransitionNone animations:^{
         [slider setValue:slider.value animated:NO];
     } completion:nil];
@@ -97,9 +97,9 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
     [UIView animateWithDuration:0.27 delay:0.03 options:UIViewAnimationOptionCurveEaseOut animations:^{
         [slider setValue:index animated:YES];
         [self syncScrollViewLeftSideToSlider];
-        self.darkOverlay.alpha = self.slider.value;
+        [self toggleDarkOverlayWithAlpha:self.slider.value];
     } completion:^(BOOL finished) {
-        self.darkOverlay.alpha = self.slider.value;
+        [self toggleDarkOverlayWithAlpha:self.slider.value];
     }];
 
 }
@@ -113,6 +113,12 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 }
 
 #pragma mark - HELPERS
+
+- (void)toggleDarkOverlayWithAlpha:(CGFloat)alpha {
+    if (alpha < 0.75)
+        self.darkOverlay.alpha = alpha;
+}
+
 - (void)toggleBlurOverlay:(BOOL)show withCompletionHandler:(void (^)())completionHandler {
     if (show) {
         UIBlurEffect * blur = [UIBlurEffect effectWithStyle: UIBlurEffectStyleDark];
