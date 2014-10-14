@@ -17,12 +17,10 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 @interface ViewController ()
 @property(nonatomic, strong) IBOutlet UIImageView *bgImage;
 @property(nonatomic, strong) UIView *blurredOverlay;
-
 @property(nonatomic, strong) UIView *sliderContainer;
 @property(nonatomic, strong) UISlider *slider;
 @property(nonatomic, strong) UIImageView *sliderImage;
-
-
+@property(nonatomic, strong) UIView *darkOverlay;
 @end
 
 @implementation ViewController
@@ -31,7 +29,7 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
     [super viewDidLoad];
     [self configureSliderContainer];
     [self configureSlider];
-
+    [self configureDarkOverlay];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -40,6 +38,7 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
         if ([v isKindOfClass:[UIImageView class]])
             self.sliderImage = (UIImageView *) v;
     }
+    [self toggleBlurOverlay:YES withCompletionHandler:nil];
 }
 
 
@@ -66,12 +65,25 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
     [self.view addSubview:slider];
 }
 
+- (void)configureDarkOverlay {
+    self.darkOverlay = [[UIView alloc] initWithFrame:CGRectZero];
+    self.darkOverlay.backgroundColor = UIColor.blackColor;
+    self.darkOverlay.alpha = 0;
+    [self.darkOverlay setUserInteractionEnabled:NO];
+    [self.view addSubview:self.darkOverlay];
+    [self.darkOverlay addVflContrstraints:@"H:|[self]|"];
+    [self.darkOverlay addVflContrstraints:@"V:|[self]|"];
+}
+
+
+
 
 
 #pragma mark - ACTIONS
 
 - (void)valueChanged:(id)sender {
     UISlider *slider = (UISlider *) sender;
+    self.darkOverlay.alpha = slider.value;
     [UIView animateWithDuration:0.1 delay:0.0 options:UIViewAnimationOptionTransitionNone animations:^{
         [slider setValue:slider.value animated:NO];
     } completion:nil];
@@ -85,37 +97,28 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
     [UIView animateWithDuration:0.27 delay:0.03 options:UIViewAnimationOptionCurveEaseOut animations:^{
         [slider setValue:index animated:YES];
         [self syncScrollViewLeftSideToSlider];
+        self.darkOverlay.alpha = self.slider.value;
     } completion:^(BOOL finished) {
-
+        self.darkOverlay.alpha = self.slider.value;
     }];
 
 }
 
 - (void)syncScrollViewLeftSideToSlider {
-
     CGRect r = [self.view convertRect:self.sliderImage.frame fromView:self.sliderImage.superview];
-
-//    NSLog(@"%s x: %f", __func__, r.origin.x);
-    CGRect f =  self.sliderContainer.frame;
-    f.origin.x = r.origin.x - (kSliderPad/2);
-    f.size.width = (self.view.bounds.size.width-kMargin)-f.origin.x;
-//
-////    NSLog(@"%s f: %@", __func__, NSStringFromCGRect(f));
+    CGRect f = self.sliderContainer.frame;
+    f.origin.x = r.origin.x - (kSliderPad / 2);
+    f.size.width = (self.view.bounds.size.width - kMargin) - f.origin.x;
     self.sliderContainer.frame = f;
 }
 
-- (IBAction)actionPowerOff:(id)sender {
-    [self toggleOverlay:YES withCompletionHandler:nil];
-}
-
 #pragma mark - HELPERS
-- (void)toggleOverlay:(BOOL)show withCompletionHandler:(void (^)())completionHandler {
+- (void)toggleBlurOverlay:(BOOL)show withCompletionHandler:(void (^)())completionHandler {
     if (show) {
-
         UIBlurEffect * blur = [UIBlurEffect effectWithStyle: UIBlurEffectStyleDark];
         self.blurredOverlay = [[UIVisualEffectView alloc] initWithEffect:blur];
         self.blurredOverlay.alpha = 0;
-        [self.view addSubview:self.blurredOverlay];
+        [self.view insertSubview:self.blurredOverlay belowSubview:self.sliderContainer];
         [self.blurredOverlay addVflContrstraints:@"H:|[self]|"];
         [self.blurredOverlay addVflContrstraints:@"V:|[self]|"];
 
