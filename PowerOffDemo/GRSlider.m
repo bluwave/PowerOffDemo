@@ -69,7 +69,7 @@ static const CGFloat GRSliderSpacingFromContainer = 5.0;
     [UIView animateWithDuration:0.1 delay:0.0 options:UIViewAnimationOptionTransitionNone animations:^{
         [slider setValue:slider.value animated:NO];
     }                completion:nil];
-    [self syncScrollViewLeftSideToSlider];
+    [self syncLeftSideContainerToSlider];
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
@@ -78,14 +78,14 @@ static const CGFloat GRSliderSpacingFromContainer = 5.0;
     NSUInteger index = (NSUInteger) (slider.value + 0.25);
     [UIView animateWithDuration:0.27 delay:0.03 options:UIViewAnimationOptionCurveEaseOut animations:^{
         [slider setValue:index animated:YES];
-        [self syncScrollViewLeftSideToSlider];
+        [self syncLeftSideContainerToSlider];
         [self sendActionsForControlEvents:UIControlEventValueChanged];
     } completion:^(BOOL finished) {
         [self sendActionsForControlEvents:UIControlEventValueChanged];
     }];
 }
 
-- (void)syncScrollViewLeftSideToSlider {
+- (void)syncLeftSideContainerToSlider {
     CGRect sliderThumbImgRect = [self thumbRect];
     UIView *container = self.bgImageContainer;
     UIView *innerView = self.backgroundImageView;
