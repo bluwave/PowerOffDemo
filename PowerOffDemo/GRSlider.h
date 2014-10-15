@@ -10,4 +10,7 @@
 
 @interface GRSlider : UIControl
 @property(nonatomic, strong) UIImageView *backgroundImageView;
+@property(nonatomic, strong) UISlider *slider;
+- (CGRect)thumbRect;
+- (CGFloat)value;
 @end

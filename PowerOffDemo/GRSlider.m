@@ -12,7 +12,6 @@
 static const CGFloat GRSliderSpacingFromContainer = 5.0;
 
 @interface GRSlider()
-@property(nonatomic, strong) UISlider *slider;
 @property(nonatomic, strong) UIImageView *sliderImageView;
 @end
 
@@ -49,23 +48,25 @@ static const CGFloat GRSliderSpacingFromContainer = 5.0;
     [slider setValue:0];
     [slider setContinuous:YES];
     [slider addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
-    [slider addTarget:self action:@selector(sliderUp:) forControlEvents:UIControlEventTouchUpInside];
+    [slider addTarget:self action:@selector(sliderDidFinishSliding:) forControlEvents:UIControlEventTouchUpInside];
+    [slider addTarget:self action:@selector(sliderDidStartSliding:) forControlEvents:UIControlEventTouchDown];
     [self addSubview:slider];
 
 }
 
 - (void)configureBackgroundImageView {
     _backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
+    [_backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
     _backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    [_backgroundImageView setBackgroundColor:UIColor.orangeColor];
+    [_backgroundImageView setBackgroundColor:[UIColor lightGrayColor]];
     [self addSubview:_backgroundImageView];
     [_backgroundImageView.layer setCornerRadius:self.bounds.size.height / 2];
     [_backgroundImageView.layer setMasksToBounds:YES];
 
-//    UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-//    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blur];
-//    [_backgroundImageView addSubview:blurEffectView];
-//    [blurEffectView pinViewToAllSidesOfSuperView];
+    UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blur];
+    [_backgroundImageView addSubview:blurEffectView];
+    [blurEffectView pinViewToAllSidesOfSuperView];
 }
 
 - (void)valueChanged:(id)sender {
@@ -78,7 +79,7 @@ static const CGFloat GRSliderSpacingFromContainer = 5.0;
 
 }
 
-- (void)sliderUp:(id)sender {
+- (void)sliderDidFinishSliding:(id)sender {
     UISlider *slider = (UISlider *) sender;
     NSUInteger index = (NSUInteger) (slider.value + 0.25);
     [UIView animateWithDuration:0.27 delay:0.03 options:UIViewAnimationOptionCurveEaseOut animations:^{
@@ -91,13 +92,26 @@ static const CGFloat GRSliderSpacingFromContainer = 5.0;
 
 }
 
+- (void)sliderDidStartSliding:(id)sender {
+    //  FIXME: fix image from moving around once sliding
+    self.backgroundImageView.autoresizingMask = UIViewAutoresizingNone;
+}
 
 - (void)syncScrollViewLeftSideToSlider {
-    CGRect trackRect = [self.slider trackRectForBounds:self.slider.bounds];
-    CGRect r = [self.slider thumbRectForBounds:self.slider.bounds trackRect:trackRect value:self.slider.value];
+    CGRect r = [self thumbRect];
     CGRect f = self.backgroundImageView.frame;
     f.origin.x = r.origin.x - (GRSliderSpacingFromContainer / 2);
     f.size.width = self.bounds.size.width - f.origin.x;
     self.backgroundImageView.frame = f;
+}
+
+- (CGRect)thumbRect {
+    CGRect trackRect = [self.slider trackRectForBounds:self.slider.bounds];
+    CGRect r = [self.slider thumbRectForBounds:self.slider.bounds trackRect:trackRect value:self.slider.value];
+    return r;
+}
+
+- (CGFloat)value {
+    return self.slider.value;
 }
 @end
