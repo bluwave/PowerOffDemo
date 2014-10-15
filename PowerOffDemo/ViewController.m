@@ -33,10 +33,8 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
     [self configureSliderContainer];
     [self configureSlider];
     [self configureDarkOverlay];
-
     [self configureGRSlider];
 }
-
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];

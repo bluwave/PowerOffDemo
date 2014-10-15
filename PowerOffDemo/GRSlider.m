@@ -12,29 +12,18 @@
 static const CGFloat GRSliderSpacingFromContainer = 5.0;
 
 @interface GRSlider()
-@property(nonatomic, strong) UIImageView *sliderImageView;
+@property(nonatomic, strong) UIView *bgImageContainer;
 @end
 
 @implementation GRSlider
 -(instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        [self configureBackgroundImageContainer];
         [self configureBackgroundImageView];
         [self configureSlider];
     }
     return self;
-}
-
-- (UIImageView *)sliderImageView {
-    if (_sliderImageView) return _sliderImageView;
-
-    for (UIView *v in self.slider.subviews) {
-        if ([v isKindOfClass:[UIImageView class]]) {
-            _sliderImageView = (UIImageView *) v;
-            break;
-        }
-    }
-    return _sliderImageView;
 }
 
 - (void)configureSlider {
@@ -49,9 +38,17 @@ static const CGFloat GRSliderSpacingFromContainer = 5.0;
     [slider setContinuous:YES];
     [slider addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
     [slider addTarget:self action:@selector(sliderDidFinishSliding:) forControlEvents:UIControlEventTouchUpInside];
-    [slider addTarget:self action:@selector(sliderDidStartSliding:) forControlEvents:UIControlEventTouchDown];
+//    [slider addTarget:self action:@selector(sliderDidStartSliding:) forControlEvents:UIControlEventTouchDown];
     [self addSubview:slider];
+}
 
+- (void)configureBackgroundImageContainer {
+    _bgImageContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
+    _bgImageContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    _bgImageContainer.backgroundColor = [UIColor clearColor];
+    [_bgImageContainer.layer setCornerRadius:self.bounds.size.height / 2];
+    [_bgImageContainer.layer setMasksToBounds:YES];
+    [self addSubview:_bgImageContainer];
 }
 
 - (void)configureBackgroundImageView {
@@ -59,9 +56,7 @@ static const CGFloat GRSliderSpacingFromContainer = 5.0;
     [_backgroundImageView setContentMode:UIViewContentModeScaleToFill];
     _backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [_backgroundImageView setBackgroundColor:[UIColor lightGrayColor]];
-    [self addSubview:_backgroundImageView];
-    [_backgroundImageView.layer setCornerRadius:self.bounds.size.height / 2];
-    [_backgroundImageView.layer setMasksToBounds:YES];
+    [_bgImageContainer addSubview:_backgroundImageView];
 
     UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
     UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blur];
@@ -71,13 +66,11 @@ static const CGFloat GRSliderSpacingFromContainer = 5.0;
 
 - (void)valueChanged:(id)sender {
     UISlider *slider = (UISlider *) sender;
-//    FIXME -  trigger this on container view of this control [self toggleDarkOverlayWithAlpha:slider.value];
     [UIView animateWithDuration:0.1 delay:0.0 options:UIViewAnimationOptionTransitionNone animations:^{
         [slider setValue:slider.value animated:NO];
     }                completion:nil];
     [self syncScrollViewLeftSideToSlider];
     [self sendActionsForControlEvents:UIControlEventValueChanged];
-
 }
 
 - (void)sliderDidFinishSliding:(id)sender {
@@ -86,29 +79,27 @@ static const CGFloat GRSliderSpacingFromContainer = 5.0;
     [UIView animateWithDuration:0.27 delay:0.03 options:UIViewAnimationOptionCurveEaseOut animations:^{
         [slider setValue:index animated:YES];
         [self syncScrollViewLeftSideToSlider];
-       //    FIXME -  trigger this on container view of this control  [self toggleDarkOverlayWithAlpha:self.slider.value];
         [self sendActionsForControlEvents:UIControlEventValueChanged];
     } completion:^(BOOL finished) {
-       //    FIXME -  trigger this on container view of this control  [self toggleDarkOverlayWithAlpha:self.slider.value];
         [self sendActionsForControlEvents:UIControlEventValueChanged];
     }];
-
-}
-
-- (void)sliderDidStartSliding:(id)sender {
-    //  FIXME: fix image from moving around once sliding
-    self.backgroundImageView.autoresizingMask = UIViewAutoresizingNone;
 }
 
 - (void)syncScrollViewLeftSideToSlider {
-    CGRect r = [self thumbRect];
-    CGRect f = self.backgroundImageView.frame;
-    CGFloat x  = r.origin.x - (GRSliderSpacingFromContainer / 2);
-    if(x < 0) x = 0;
-    f.origin.x = x;
-    f.size.width = self.bounds.size.width - f.origin.x;
-//    NSLog(@" x: %f w: %f nX: %f",f.origin.x, f.size.width,x);
-    self.backgroundImageView.frame = f;
+    CGRect sliderThumbImgRect = [self thumbRect];
+    UIView *container = self.bgImageContainer;
+    UIView *innerView = self.backgroundImageView;
+    CGRect containerFrame = container.frame;
+    CGRect innerFrame = innerView.frame;
+
+    CGFloat x = sliderThumbImgRect.origin.x - (GRSliderSpacingFromContainer / 2);
+    if (x < 0) x = 0;
+    containerFrame.origin.x = x;
+    innerFrame.origin.x = -x;
+    containerFrame.size.width = self.bounds.size.width - containerFrame.origin.x;
+
+    container.frame = containerFrame;
+    innerView.frame = innerFrame;
 }
 
 - (CGRect)thumbRect {
