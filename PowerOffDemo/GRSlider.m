@@ -76,6 +76,7 @@ static const CGFloat GRSliderSpacingFromContainer = 5.0;
         [slider setValue:slider.value animated:NO];
     }                completion:nil];
     [self syncScrollViewLeftSideToSlider];
+    [self sendActionsForControlEvents:UIControlEventValueChanged];
 
 }
 
@@ -86,8 +87,10 @@ static const CGFloat GRSliderSpacingFromContainer = 5.0;
         [slider setValue:index animated:YES];
         [self syncScrollViewLeftSideToSlider];
        //    FIXME -  trigger this on container view of this control  [self toggleDarkOverlayWithAlpha:self.slider.value];
+        [self sendActionsForControlEvents:UIControlEventValueChanged];
     } completion:^(BOOL finished) {
        //    FIXME -  trigger this on container view of this control  [self toggleDarkOverlayWithAlpha:self.slider.value];
+        [self sendActionsForControlEvents:UIControlEventValueChanged];
     }];
 
 }

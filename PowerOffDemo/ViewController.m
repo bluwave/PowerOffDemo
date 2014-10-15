@@ -61,12 +61,8 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 #pragma mark - CONFIGURE
 
 - (void)configureGRSlider {
-    GRSliderWithLabel * s = [[GRSliderWithLabel alloc] initWithFrame:CGRectMake(kMargin, 240, kRadius+kSliderPad, kRadius + kSliderPad)];
-    self.grSlider = s;
-
-//    s.backgroundImageView.image =
-
-//    self.grSlider = [[GRSlider alloc] initWithFrame:CGRectMake(kMargin, 240, kRadius+kSliderPad, kRadius + kSliderPad)];
+    self.grSlider = [[GRSliderWithLabel alloc] initWithFrame:CGRectMake(kMargin, 240, kRadius + kSliderPad, kRadius + kSliderPad)];
+    [self.grSlider addTarget:self action:@selector(actionGRSliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.grSlider];
 }
 
@@ -119,6 +115,11 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 
 
 #pragma mark - ACTIONS
+
+- (void)actionGRSliderValueChanged:(GRSlider *)sender {
+//    NSLog(@"%s grSLiderValue: %f", __func__, self.grSlider.value);
+    [self toggleDarkOverlayWithAlpha:self.grSlider.value];
+}
 
 - (void)valueChanged:(id)sender {
     UISlider *slider = (UISlider *) sender;
