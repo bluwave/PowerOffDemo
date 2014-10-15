@@ -21,7 +21,7 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 @property(nonatomic, strong) UIView *blurredOverlay;
 @property(nonatomic, strong) UIView *darkOverlay;
 @property(nonatomic, strong) GRSliderWithLabel *slider;
-@property(nonatomic, strong) IBOutlet UIView *buttonContainerView;
+@property(nonatomic, strong) IBOutlet UIView *cancelButtonContainer;
 @end
 
 @implementation ViewController
@@ -70,10 +70,21 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
     CGRect dstRect = CGRectMake(kMargin, kSliderVerticalOffsetFromTop, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad);
     [self configureBgImageInSliderWithRect:(CGRect) {0, dstRect.origin.y, dstRect.size}];
     [self animateSliderToRect:dstRect WithCompletionHandler:nil];
+    [self.cancelButtonContainer setHidden:NO];
+    [self.view bringSubviewToFront:self.cancelButtonContainer];
+    [self.view bringSubviewToFront:self.darkOverlay];
 }
 
 - (void)actionValueChanged:(GRSlider *)sender {
     [self toggleDarkOverlayWithAlpha:self.slider.value];
+}
+
+- (IBAction)actionCancel:(id)sender {
+    [self.slider setHidden:YES];
+    [self.cancelButtonContainer setHidden:YES];
+    //  FIXME: duplicate code here on the frame
+    [self.slider setFrame:CGRectMake(kMargin, kSliderVerticalOffsetFromTop, kRadius + kSliderPad, kRadius + kSliderPad)];
+    [self toggleBlurOverlay:NO withCompletionHandler:nil];
 }
 
 #pragma mark - HELPERS
