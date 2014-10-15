@@ -103,8 +103,11 @@ static const CGFloat GRSliderSpacingFromContainer = 5.0;
 - (void)syncScrollViewLeftSideToSlider {
     CGRect r = [self thumbRect];
     CGRect f = self.backgroundImageView.frame;
-    f.origin.x = r.origin.x - (GRSliderSpacingFromContainer / 2);
+    CGFloat x  = r.origin.x - (GRSliderSpacingFromContainer / 2);
+    if(x < 0) x = 0;
+    f.origin.x = x;
     f.size.width = self.bounds.size.width - f.origin.x;
+//    NSLog(@" x: %f w: %f nX: %f",f.origin.x, f.size.width,x);
     self.backgroundImageView.frame = f;
 }
 

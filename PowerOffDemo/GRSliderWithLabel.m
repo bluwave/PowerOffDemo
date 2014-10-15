@@ -80,14 +80,13 @@
 }
 
 - (void)stopSliding:(id)sender {
-    NSLog(@"%s", __func__);
   [self toggleTextLabel:sender];
 
 }
 
 - (void)toggleTextLabel:(id)sender {
-    CGPoint sliderPosition = [self thumbRect].origin;
-    NSLog(@"%s sliderPos: %@", __func__, NSStringFromCGPoint(sliderPosition));
+//    CGPoint sliderPosition = [self thumbRect].origin;
+//    NSLog(@"%s sliderPos: %@", __func__, NSStringFromCGPoint(sliderPosition));
     UISlider *s = (UISlider *) sender;
     if (s.value == 0)
         self.textLabel.alpha = 1;
