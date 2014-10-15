@@ -46,19 +46,17 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
     }
     [self toggleBlurOverlay:YES withCompletionHandler:nil];
 
-    __weak __typeof__(self) weakself = self;
-    [self animateSliderWithCompletionHandler:^{
-        if(weakself) {
-            UIImage * lgImg = [weakself snapshotOfView:self.bgImage WithScale:1];
-            UIImage * img =  [weakself imageWithImage:lgImg cropInRect:weakself.grSlider.frame];
-            weakself.grSlider.backgroundImageView.image = img;
-        }
-    }];
-
-
+    CGRect dstRect = CGRectMake(kMargin, 240, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad);
+    [self configureBgImageInSliderWithRect:(CGRect) {0, dstRect.origin.y, dstRect.size}];
+    [self animateSliderToRect:dstRect WithCompletionHandler:nil];
 }
 
 #pragma mark - CONFIGURE
+- (void)configureBgImageInSliderWithRect:(CGRect)dstRect {
+    UIImage *lgImg = [self snapshotOfView:self.bgImage WithScale:1];
+    UIImage *img = [self imageWithImage:lgImg cropInRect:dstRect];
+    self.grSlider.backgroundImageView.image = img;
+}
 
 - (void)configureGRSlider {
     self.grSlider = [[GRSliderWithLabel alloc] initWithFrame:CGRectMake(kMargin, 240, kRadius + kSliderPad, kRadius + kSliderPad)];
@@ -111,13 +109,9 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 }
 
 
-
-
-
 #pragma mark - ACTIONS
 
 - (void)actionGRSliderValueChanged:(GRSlider *)sender {
-//    NSLog(@"%s grSLiderValue: %f", __func__, self.grSlider.value);
     [self toggleDarkOverlayWithAlpha:self.grSlider.value];
 }
 
@@ -158,9 +152,8 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 
 #pragma mark - HELPERS
 
-- (void)animateSliderWithCompletionHandler:(void(^)()) handler {
+- (void)animateSliderToRect:(CGRect)dstRect WithCompletionHandler:(void (^)())handler {
     //  FIXME - this needs some cleanup / refinement
-    CGRect dstRect = CGRectMake(kMargin, 240, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad);
     [UIView animateWithDuration:0.35 delay:0.05 options:UIViewAnimationOptionCurveEaseOut animations:^{
         self.grSlider.frame = dstRect;
     } completion:^(BOOL finished) {

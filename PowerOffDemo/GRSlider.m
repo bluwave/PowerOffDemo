@@ -56,7 +56,7 @@ static const CGFloat GRSliderSpacingFromContainer = 5.0;
 
 - (void)configureBackgroundImageView {
     _backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
-    [_backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
+    [_backgroundImageView setContentMode:UIViewContentModeScaleToFill];
     _backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [_backgroundImageView setBackgroundColor:[UIColor lightGrayColor]];
     [self addSubview:_backgroundImageView];
