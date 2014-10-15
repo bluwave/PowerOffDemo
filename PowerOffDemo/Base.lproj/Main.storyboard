@@ -20,23 +20,60 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="placeholder2.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="BAF-9C-eIg">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6xd-Nu-iRL">
-                                <rect key="frame" x="451" y="544" width="133" height="30"/>
-                                <state key="normal" title="Button">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="actionPowerOff:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="l1v-QG-hsT"/>
-                                </connections>
-                            </button>
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9bL-XR-gZO">
+                                <rect key="frame" x="0.0" y="387" width="600" height="60"/>
+                                <subviews>
+                                    <visualEffectView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ip1-Xc-Eiv">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" id="iB9-El-BLN">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yFl-Xg-LFa">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" id="G9v-0E-aDk">
+                                                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    </view>
+                                                    <vibrancyEffect>
+                                                        <blurEffect style="light"/>
+                                                    </vibrancyEffect>
+                                                </visualEffectView>
+                                            </subviews>
+                                        </view>
+                                        <blurEffect style="light"/>
+                                    </visualEffectView>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6xd-Nu-iRL">
+                                        <rect key="frame" x="220" y="15" width="160" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="TURN PHONE OFF">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="actionPoweroff:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="HrQ-Q9-yn6"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerY" secondItem="6xd-Nu-iRL" secondAttribute="centerY" id="7fk-hs-idW"/>
+                                    <constraint firstItem="Ip1-Xc-Eiv" firstAttribute="top" secondItem="9bL-XR-gZO" secondAttribute="top" id="Emn-of-Cgy"/>
+                                    <constraint firstItem="Ip1-Xc-Eiv" firstAttribute="leading" secondItem="9bL-XR-gZO" secondAttribute="leading" id="MEw-po-wXI"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ip1-Xc-Eiv" secondAttribute="trailing" id="N2w-EL-jyJ"/>
+                                    <constraint firstAttribute="centerX" secondItem="6xd-Nu-iRL" secondAttribute="centerX" id="Ujk-29-WsP"/>
+                                    <constraint firstAttribute="bottom" secondItem="Ip1-Xc-Eiv" secondAttribute="bottom" id="ztm-Ui-r0S"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="6xd-Nu-iRL" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="EZE-6h-fw6"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="9bL-XR-gZO" secondAttribute="trailing" constant="-16" id="1fZ-af-Y7E"/>
+                            <constraint firstItem="9bL-XR-gZO" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="5fX-fm-zSA"/>
                             <constraint firstItem="BAF-9C-eIg" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="MhH-Ly-x3I"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="BAF-9C-eIg" secondAttribute="bottom" id="OHy-PA-wCb"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="9bL-XR-gZO" secondAttribute="bottom" constant="153" id="Sng-ga-rgW"/>
                             <constraint firstAttribute="trailingMargin" secondItem="BAF-9C-eIg" secondAttribute="trailing" id="ZNv-yn-xPq"/>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="6xd-Nu-iRL" secondAttribute="bottom" constant="26" id="dcf-Uu-h9F"/>
                             <constraint firstItem="BAF-9C-eIg" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" id="ztW-tb-EBR"/>
                         </constraints>
                     </view>

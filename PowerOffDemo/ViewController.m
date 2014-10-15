@@ -19,81 +19,37 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 @interface ViewController ()
 @property(nonatomic, strong) IBOutlet UIImageView *bgImage;
 @property(nonatomic, strong) UIView *blurredOverlay;
-@property(nonatomic, strong) UIView *sliderContainer;
-@property(nonatomic, strong) UISlider *slider;
-@property(nonatomic, strong) UIImageView *sliderImage;
 @property(nonatomic, strong) UIView *darkOverlay;
-@property(nonatomic, strong) GRSliderWithLabel *grSlider;
+@property(nonatomic, strong) GRSliderWithLabel *slider;
+@property(nonatomic, strong) IBOutlet UIView *buttonContainerView;
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self configureSliderContainer];
-    [self configureSlider];
-    [self configureDarkOverlay];
     [self configureGRSlider];
+    [self configureDarkOverlay];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    for (UIView *v in self.slider.subviews) {
-        if ([v isKindOfClass:[UIImageView class]])
-            self.sliderImage = (UIImageView *) v;
-    }
-    [self toggleBlurOverlay:YES withCompletionHandler:nil];
 
-    CGRect dstRect = CGRectMake(kMargin, 240, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad);
-    [self configureBgImageInSliderWithRect:(CGRect) {0, dstRect.origin.y, dstRect.size}];
-    [self animateSliderToRect:dstRect WithCompletionHandler:nil];
 }
 
 #pragma mark - CONFIGURE
 - (void)configureBgImageInSliderWithRect:(CGRect)dstRect {
     UIImage *lgImg = [self snapshotOfView:self.bgImage WithScale:1];
     UIImage *img = [self imageWithImage:lgImg cropInRect:dstRect];
-    self.grSlider.backgroundImageView.image = img;
+    self.slider.backgroundImageView.image = img;
 }
 
 - (void)configureGRSlider {
-    self.grSlider = [[GRSliderWithLabel alloc] initWithFrame:CGRectMake(kMargin, 240, kRadius + kSliderPad, kRadius + kSliderPad)];
-    [self.grSlider addTarget:self action:@selector(actionGRSliderValueChanged:) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:self.grSlider];
-}
-
-- (void)configureSliderContainer {
-    //  FIXME - need to grab lighter blur from background
-    UIBlurEffect * blur = [UIBlurEffect effectWithStyle: UIBlurEffectStyleLight];
-    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blur];
-//    self.sliderContainer.frame = CGRectMake(kMargin, kSliderVerticalOffsetFromTop, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad);
-    self.sliderContainer = [[UIImageView alloc] initWithImage:self.bgImage.image];
-    self.sliderContainer.frame = CGRectMake(kMargin, kSliderVerticalOffsetFromTop, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad);
-    [self.sliderContainer setContentMode:UIViewContentModeScaleAspectFill];
-    [self.sliderContainer addSubview:blurEffectView];
-    [blurEffectView addVflContrstraints:@"H:|[self]|"];
-    [blurEffectView addVflContrstraints:@"V:|[self]|"];
-
-//    self.sliderContainer = [[UIView alloc] initWithFrame:CGRectMake(kMargin, kSliderVerticalOffsetFromTop, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad)];
-//    [self.sliderContainer setBackgroundColor:[UIColor orangeColor]];
-    self.sliderContainer.layer.cornerRadius = (kRadius + kSliderPad) / 2;
-    [self.sliderContainer.layer setMasksToBounds:YES];
-    [self.view addSubview:self.sliderContainer];
-}
-
-- (void)configureSlider {
-    UISlider *slider = self.slider = [[UISlider alloc] initWithFrame:CGRectMake(kMargin + (kSliderPad / 2), kSliderVerticalOffsetFromTop + kSliderPad / 2, (self.view.bounds.size.width - (2 * kMargin)) - kSliderPad, kRadius)];
-    [slider setMinimumTrackImage:[UIImage new] forState:UIControlStateNormal];
-    [slider setMaximumTrackImage:[UIImage new] forState:UIControlStateNormal];
-    [slider setThumbImage:[UIImage imageNamed:@"off.png"] forState:UIControlStateNormal];
-    [slider setMaximumValue:1];
-    [slider setMinimumValue:0];
-    [slider setValue:0];
-    [slider setContinuous:YES];
-    [slider addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
-    [slider addTarget:self action:@selector(slidingDidFinish:) forControlEvents:UIControlEventTouchUpInside];
-    [slider addTarget:self action:@selector(slidingStarted:) forControlEvents:UIControlEventTouchDown];
-    [self.view addSubview:slider];
+    self.slider = [[GRSliderWithLabel alloc] initWithFrame:CGRectMake(kMargin, kSliderVerticalOffsetFromTop, kRadius + kSliderPad, kRadius + kSliderPad)];
+    [self.slider addTarget:self action:@selector(actionValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [self.slider setHidden:YES];
+    [self.view addSubview:self.slider];
 }
 
 - (void)configureDarkOverlay {
@@ -106,46 +62,18 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
     [self.darkOverlay addVflContrstraints:@"V:|[self]|"];
 }
 
-
 #pragma mark - ACTIONS
 
-- (void)actionGRSliderValueChanged:(GRSlider *)sender {
-    [self toggleDarkOverlayWithAlpha:self.grSlider.value];
+- (IBAction)actionPoweroff:(id)sender {
+    [self toggleBlurOverlay:YES withCompletionHandler:nil];
+    [self.slider setHidden:NO];
+    CGRect dstRect = CGRectMake(kMargin, kSliderVerticalOffsetFromTop, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad);
+    [self configureBgImageInSliderWithRect:(CGRect) {0, dstRect.origin.y, dstRect.size}];
+    [self animateSliderToRect:dstRect WithCompletionHandler:nil];
 }
 
-- (void)valueChanged:(id)sender {
-    UISlider *slider = (UISlider *) sender;
-    [self toggleDarkOverlayWithAlpha:slider.value];
-    [UIView animateWithDuration:0.1 delay:0.0 options:UIViewAnimationOptionTransitionNone animations:^{
-        [slider setValue:slider.value animated:NO];
-    } completion:nil];
-    [self syncScrollViewLeftSideToSlider];
-
-}
-
-- (void)slidingDidFinish:(id)sender {
-    UISlider *slider = (UISlider *) sender;
-    NSUInteger index = (NSUInteger) (slider.value + 0.25);
-    [UIView animateWithDuration:0.27 delay:0.03 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        [slider setValue:index animated:YES];
-        [self syncScrollViewLeftSideToSlider];
-        [self toggleDarkOverlayWithAlpha:self.slider.value];
-    } completion:^(BOOL finished) {
-        [self toggleDarkOverlayWithAlpha:self.slider.value];
-    }];
-
-}
-
-- (void)slidingStarted:(id)sender {
-
-}
-
-- (void)syncScrollViewLeftSideToSlider {
-    CGRect r = [self.view convertRect:self.sliderImage.frame fromView:self.sliderImage.superview];
-    CGRect f = self.sliderContainer.frame;
-    f.origin.x = r.origin.x - (kSliderPad / 2);
-    f.size.width = (self.view.bounds.size.width - kMargin) - f.origin.x;
-    self.sliderContainer.frame = f;
+- (void)actionValueChanged:(GRSlider *)sender {
+    [self toggleDarkOverlayWithAlpha:self.slider.value];
 }
 
 #pragma mark - HELPERS
@@ -153,9 +81,9 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 - (void)animateSliderToRect:(CGRect)dstRect WithCompletionHandler:(void (^)())handler {
     //  FIXME - this needs some cleanup / refinement
     [UIView animateWithDuration:0.35 delay:0.05 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        self.grSlider.frame = dstRect;
+        self.slider.frame = dstRect;
     } completion:^(BOOL finished) {
-        [self.grSlider.textLabel setTextWithChangeAnimation:@"hello world"];
+        [self.slider.textLabel setTextWithChangeAnimation:@"hello world"];
         if (handler) handler();
     }];
 }
@@ -170,7 +98,7 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
         UIBlurEffect * blur = [UIBlurEffect effectWithStyle: UIBlurEffectStyleDark];
         self.blurredOverlay = [[UIVisualEffectView alloc] initWithEffect:blur];
         self.blurredOverlay.alpha = 0;
-        [self.view insertSubview:self.blurredOverlay belowSubview:self.sliderContainer];
+        [self.view insertSubview:self.blurredOverlay belowSubview:self.slider];
         [self.blurredOverlay addVflContrstraints:@"H:|[self]|"];
         [self.blurredOverlay addVflContrstraints:@"V:|[self]|"];
 
@@ -191,7 +119,6 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
         }];
     }
 }
-
 
 - (UIImage *)snapshotOfView:(UIView *)view WithScale:(CGFloat)scale {
     UIImage *snapshot = nil;
