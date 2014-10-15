@@ -13,7 +13,7 @@
 
 static const CGFloat kRadius = 60.0;
 static const CGFloat kSliderPad = 15.0;
-static const CGFloat kMargin = 20.0;
+static const CGFloat kMargin =  50.0;
 static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 
 @interface ViewController ()
