@@ -10,6 +10,8 @@
 
 @interface ViewController : UIViewController
 
+- (void)slidingDidFinish:(id)sender;
 
+- (void)slidingStarted:(id)sender;
 @end
 

@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "UIView+DemoAdditions.h"
 #import "GRSlider.h"
+#import "GRSliderWithLabel.h"
 
 static const CGFloat kRadius = 60.0;
 static const CGFloat kSliderPad = 15.0;
@@ -22,7 +23,7 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 @property(nonatomic, strong) UISlider *slider;
 @property(nonatomic, strong) UIImageView *sliderImage;
 @property(nonatomic, strong) UIView *darkOverlay;
-@property(nonatomic, strong) GRSlider *grSlider;
+@property(nonatomic, strong) GRSliderWithLabel *grSlider;
 @end
 
 @implementation ViewController
@@ -45,13 +46,27 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
     }
     [self toggleBlurOverlay:YES withCompletionHandler:nil];
 
-    [self animateSlider];
+    __weak __typeof__(self) weakself = self;
+    [self animateSliderWithCompletionHandler:^{
+        if(weakself) {
+            UIImage * lgImg = [weakself snapshotOfView:self.bgImage WithScale:1];
+            UIImage * img =  [weakself imageWithImage:lgImg cropInRect:weakself.grSlider.frame];
+            weakself.grSlider.backgroundImageView.image = img;
+        }
+    }];
+
+
 }
 
 #pragma mark - CONFIGURE
 
 - (void)configureGRSlider {
-    self.grSlider = [[GRSlider alloc] initWithFrame:CGRectMake(kMargin, 240, kRadius+kSliderPad, kRadius + kSliderPad)];
+    GRSliderWithLabel * s = [[GRSliderWithLabel alloc] initWithFrame:CGRectMake(kMargin, 240, kRadius+kSliderPad, kRadius + kSliderPad)];
+    self.grSlider = s;
+
+//    s.backgroundImageView.image =
+
+//    self.grSlider = [[GRSlider alloc] initWithFrame:CGRectMake(kMargin, 240, kRadius+kSliderPad, kRadius + kSliderPad)];
     [self.view addSubview:self.grSlider];
 }
 
@@ -84,7 +99,8 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
     [slider setValue:0];
     [slider setContinuous:YES];
     [slider addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
-    [slider addTarget:self action:@selector(sliderUp:) forControlEvents:UIControlEventTouchUpInside];
+    [slider addTarget:self action:@selector(slidingDidFinish:) forControlEvents:UIControlEventTouchUpInside];
+    [slider addTarget:self action:@selector(slidingStarted:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:slider];
 }
 
@@ -114,7 +130,7 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 
 }
 
-- (void)sliderUp:(id)sender {
+- (void)slidingDidFinish:(id)sender {
     UISlider *slider = (UISlider *) sender;
     NSUInteger index = (NSUInteger) (slider.value + 0.25);
     [UIView animateWithDuration:0.27 delay:0.03 options:UIViewAnimationOptionCurveEaseOut animations:^{
@@ -124,6 +140,10 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
     } completion:^(BOOL finished) {
         [self toggleDarkOverlayWithAlpha:self.slider.value];
     }];
+
+}
+
+- (void)slidingStarted:(id)sender {
 
 }
 
@@ -137,13 +157,14 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 
 #pragma mark - HELPERS
 
-- (void)animateSlider {
+- (void)animateSliderWithCompletionHandler:(void(^)()) handler {
     //  FIXME - this needs some cleanup / refinement
     CGRect dstRect = CGRectMake(kMargin, 240, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad);
     [UIView animateWithDuration:0.35 delay:0.05 options:UIViewAnimationOptionCurveEaseOut animations:^{
         self.grSlider.frame = dstRect;
     } completion:^(BOOL finished) {
-
+        [self.grSlider.textLabel setTextWithChangeAnimation:@"hello world"];
+        if (handler) handler();
     }];
 }
 
@@ -178,4 +199,30 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
         }];
     }
 }
+
+
+- (UIImage *)snapshotOfView:(UIView *)view WithScale:(CGFloat)scale {
+    UIImage *snapshot = nil;
+    @autoreleasepool {
+        UIGraphicsBeginImageContextWithOptions(view.bounds.size, YES, scale);
+        [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+        snapshot = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    }
+    return snapshot;
+}
+
+- (UIImage *)imageWithImage:(UIImage *)image cropInRect:(CGRect)rect {
+    NSParameterAssert(image != nil);
+    if (CGPointEqualToPoint(CGPointZero, rect.origin) && CGSizeEqualToSize(rect.size, image.size)) {
+        return image;
+    }
+
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 1);
+    [image drawAtPoint:(CGPoint){-rect.origin.x, -rect.origin.y}];
+    UIImage *croppedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return croppedImage;
+}
+
 @end
