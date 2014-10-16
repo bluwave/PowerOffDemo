@@ -70,10 +70,15 @@
 }
 
 - (void)toggleTextLabel:(id)sender {
-    UISlider *s = (UISlider *) sender;
-    if (s.value == 0)
-        self.textLabel.alpha = 1;
-    else self.textLabel.alpha = 0;
+//    NSLog(@"%f", self.value);
+    if (self.value == 0) {
+        [UIView animateWithDuration:0.3 delay:0.25 options:0 animations:^{
+            self.textLabel.alpha = 1;
+        } completion:nil];
+    }
+    else {
+        self.textLabel.alpha = 0;
+    }
 }
 
 
