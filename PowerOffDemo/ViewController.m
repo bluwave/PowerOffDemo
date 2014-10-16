@@ -28,7 +28,7 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self configureGRSlider];
+    [self configureSlider];
     [self configureDarkOverlay];
 
 }
@@ -45,7 +45,7 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
     self.slider.backgroundImageView.image = img;
 }
 
-- (void)configureGRSlider {
+- (void)configureSlider {
     self.slider = [[GRSliderWithLabel alloc] initWithFrame:CGRectMake(kMargin, kSliderVerticalOffsetFromTop, kRadius + kSliderPad, kRadius + kSliderPad)];
     [self.slider addTarget:self action:@selector(actionValueChanged:) forControlEvents:UIControlEventValueChanged];
     [self.slider setHidden:YES];
@@ -65,14 +65,15 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
 #pragma mark - ACTIONS
 
 - (IBAction)actionPoweroff:(id)sender {
-    [self toggleBlurOverlay:YES withCompletionHandler:nil];
-    [self.slider setHidden:NO];
-    CGRect dstRect = CGRectMake(kMargin, kSliderVerticalOffsetFromTop, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad);
-    [self configureBgImageInSliderWithRect:(CGRect) {0, dstRect.origin.y, dstRect.size}];
-    [self animateSliderToRect:dstRect WithCompletionHandler:nil];
-    [self.cancelButtonContainer setHidden:NO];
-    [self.view bringSubviewToFront:self.cancelButtonContainer];
-    [self.view bringSubviewToFront:self.darkOverlay];
+    [self toggleBlurOverlay:YES withCompletionHandler:^{
+        [self.slider setHidden:NO];
+        CGRect dstRect = CGRectMake(kMargin, kSliderVerticalOffsetFromTop, self.view.bounds.size.width - (2 * kMargin), kRadius + kSliderPad);
+        [self configureBgImageInSliderWithRect:(CGRect) {0, dstRect.origin.y, dstRect.size}];
+        [self animateSliderToRect:dstRect WithCompletionHandler:nil];
+        [self.cancelButtonContainer setHidden:NO];
+        [self.view bringSubviewToFront:self.cancelButtonContainer];
+        [self.view bringSubviewToFront:self.darkOverlay];
+    }];
 }
 
 - (void)actionValueChanged:(GRSlider *)sender {
@@ -113,7 +114,7 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
         [self.blurredOverlay addVflContrstraints:@"H:|[self]|"];
         [self.blurredOverlay addVflContrstraints:@"V:|[self]|"];
 
-        [UIView animateWithDuration:0.2 animations:^{
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
             self.blurredOverlay.alpha = 1.0;
         } completion:^(BOOL finished) {
             if (completionHandler)
