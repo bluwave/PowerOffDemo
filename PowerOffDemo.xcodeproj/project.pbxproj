@@ -15,12 +15,13 @@
 		3B42779E19EC3FAD009D8264 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B42779C19EC3FAD009D8264 /* LaunchScreen.xib */; };
 		3B4277AA19EC3FAD009D8264 /* PowerOffDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B4277A919EC3FAD009D8264 /* PowerOffDemoTests.m */; };
 		3B58A03F19EC41AB0008EBF3 /* UIView+DemoAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B58A03E19EC41AB0008EBF3 /* UIView+DemoAdditions.m */; };
-		3B58A04219EC448A0008EBF3 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B58A04119EC448A0008EBF3 /* placeholder.png */; };
 		3BB7035E19ED047300406731 /* off.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BB7035D19ED047300406731 /* off.png */; };
 		3BB7036119ED897B00406731 /* GRSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB7036019ED897B00406731 /* GRSlider.m */; };
 		3BB7037119EDEDAE00406731 /* GRSliderWithLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB7037019EDEDAE00406731 /* GRSliderWithLabel.m */; };
 		3BB7037719EEBC5600406731 /* placeholder2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3BB7037619EEBC5600406731 /* placeholder2.jpg */; };
 		3BB7038F19EEFF8700406731 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BB7038E19EEFF8700406731 /* cancel.png */; };
+		3BB703BC19EFB7DA00406731 /* FBShimmeringLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB703B919EFB7DA00406731 /* FBShimmeringLayer.m */; };
+		3BB703BD19EFB7DA00406731 /* FBShimmeringView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB703BB19EFB7DA00406731 /* FBShimmeringView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,7 +50,6 @@
 		3B4277A919EC3FAD009D8264 /* PowerOffDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PowerOffDemoTests.m; sourceTree = "<group>"; };
 		3B58A03D19EC41AB0008EBF3 /* UIView+DemoAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+DemoAdditions.h"; path = "Category/UIView+DemoAdditions.h"; sourceTree = "<group>"; };
 		3B58A03E19EC41AB0008EBF3 /* UIView+DemoAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+DemoAdditions.m"; path = "Category/UIView+DemoAdditions.m"; sourceTree = "<group>"; };
-		3B58A04119EC448A0008EBF3 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = placeholder.png; path = images/placeholder.png; sourceTree = SOURCE_ROOT; };
 		3BB7035D19ED047300406731 /* off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = off.png; path = images/off.png; sourceTree = SOURCE_ROOT; };
 		3BB7035F19ED897B00406731 /* GRSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRSlider.h; sourceTree = "<group>"; };
 		3BB7036019ED897B00406731 /* GRSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRSlider.m; sourceTree = "<group>"; };
@@ -57,6 +57,11 @@
 		3BB7037019EDEDAE00406731 /* GRSliderWithLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRSliderWithLabel.m; sourceTree = "<group>"; };
 		3BB7037619EEBC5600406731 /* placeholder2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = placeholder2.jpg; path = images/placeholder2.jpg; sourceTree = SOURCE_ROOT; };
 		3BB7038E19EEFF8700406731 /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cancel.png; path = images/cancel.png; sourceTree = SOURCE_ROOT; };
+		3BB703B719EFB7DA00406731 /* FBShimmering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBShimmering.h; sourceTree = "<group>"; };
+		3BB703B819EFB7DA00406731 /* FBShimmeringLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBShimmeringLayer.h; sourceTree = "<group>"; };
+		3BB703B919EFB7DA00406731 /* FBShimmeringLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringLayer.m; sourceTree = "<group>"; };
+		3BB703BA19EFB7DA00406731 /* FBShimmeringView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBShimmeringView.h; sourceTree = "<group>"; };
+		3BB703BB19EFB7DA00406731 /* FBShimmeringView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,7 +163,6 @@
 				3BB7038E19EEFF8700406731 /* cancel.png */,
 				3BB7037619EEBC5600406731 /* placeholder2.jpg */,
 				3BB7035D19ED047300406731 /* off.png */,
-				3B58A04119EC448A0008EBF3 /* placeholder.png */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -166,9 +170,23 @@
 		3BB7037219EDF79800406731 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				3BB703B519EFB7DA00406731 /* FBShimmering */,
 			);
 			name = lib;
 			sourceTree = "<group>";
+		};
+		3BB703B519EFB7DA00406731 /* FBShimmering */ = {
+			isa = PBXGroup;
+			children = (
+				3BB703B719EFB7DA00406731 /* FBShimmering.h */,
+				3BB703B819EFB7DA00406731 /* FBShimmeringLayer.h */,
+				3BB703B919EFB7DA00406731 /* FBShimmeringLayer.m */,
+				3BB703BA19EFB7DA00406731 /* FBShimmeringView.h */,
+				3BB703BB19EFB7DA00406731 /* FBShimmeringView.m */,
+			);
+			name = FBShimmering;
+			path = lib/Shimmer/FBShimmering;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -253,7 +271,6 @@
 				3BB7035E19ED047300406731 /* off.png in Resources */,
 				3BB7038F19EEFF8700406731 /* cancel.png in Resources */,
 				3BB7037719EEBC5600406731 /* placeholder2.jpg in Resources */,
-				3B58A04219EC448A0008EBF3 /* placeholder.png in Resources */,
 				3B42779E19EC3FAD009D8264 /* LaunchScreen.xib in Resources */,
 				3B42779B19EC3FAD009D8264 /* Images.xcassets in Resources */,
 			);
@@ -276,7 +293,9 @@
 				3B42779619EC3FAD009D8264 /* ViewController.m in Sources */,
 				3BB7036119ED897B00406731 /* GRSlider.m in Sources */,
 				3B58A03F19EC41AB0008EBF3 /* UIView+DemoAdditions.m in Sources */,
+				3BB703BD19EFB7DA00406731 /* FBShimmeringView.m in Sources */,
 				3B42779319EC3FAD009D8264 /* AppDelegate.m in Sources */,
+				3BB703BC19EFB7DA00406731 /* FBShimmeringLayer.m in Sources */,
 				3BB7037119EDEDAE00406731 /* GRSliderWithLabel.m in Sources */,
 				3B42779019EC3FAD009D8264 /* main.m in Sources */,
 			);
