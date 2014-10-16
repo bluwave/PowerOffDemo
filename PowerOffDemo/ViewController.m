@@ -95,7 +95,8 @@ static const CGFloat kSliderVerticalOffsetFromTop = 100.0;
     [UIView animateWithDuration:0.35 delay:0.05 options:UIViewAnimationOptionCurveEaseOut animations:^{
         self.slider.frame = dstRect;
     } completion:^(BOOL finished) {
-        [self.slider.textLabel setTextWithChangeAnimation:@"hello world"];
+        [self.slider.textLabel setText:@"slide to power off"];
+        [self.slider.textLabel sizeToFit];
         if (handler) handler();
     }];
 }

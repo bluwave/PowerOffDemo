@@ -7,15 +7,10 @@
 //
 
 #import "GRSliderWithLabel.h"
-
-#import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
-
-
-
+#import "FBShimmeringView.h"
 
 @interface GRSliderWithLabel()
-
+@property(nonatomic, strong) FBShimmeringView *shimmeringView;
 @end
 @implementation GRSliderWithLabel
 
@@ -23,22 +18,40 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        _textLabel = [[UILabel alloc] initWithFrame:frame];
-        _textLabel.textColor = [UIColor whiteColor];
-        _textLabel.font = [UIFont systemFontOfSize:35];
-        _textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-//        _textLabel.alpha = 0;
-        [self addSubview:_textLabel];
-        [_textLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:_textLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:_textLabel.superview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:_textLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:_textLabel.superview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
+        [self configureTextlabel];
         [self.slider addTarget:self action:@selector(stopSliding:) forControlEvents:UIControlEventTouchUpInside];
         [self.slider addTarget:self action:@selector(subSliderValueChanged:) forControlEvents:UIControlEventValueChanged];
-        [_textLabel setTextWithChangeAnimation:@"slide to poweroff"];
-        _textLabel.text = @"foobar";
-        _textLabel.alpha = 0;
     }
     return self;
+}
+
+- (void)configureShimmeringView {
+    if (!self.shimmeringView) {
+        CGFloat shiftValue = [self thumbRect].size.width+25;
+        FBShimmeringView *shimmeringView = self.shimmeringView = [[FBShimmeringView alloc] initWithFrame:(CGRect){shiftValue,self.bounds.origin.y,self.bounds.size.width, self.bounds.size.height}];
+        self.shimmeringView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        shimmeringView.contentView = self.textLabel;
+        shimmeringView.shimmeringAnimationOpacity = 0;
+        shimmeringView.shimmeringOpacity = 1;
+        shimmeringView.shimmeringSpeed = 75;
+        shimmeringView.shimmeringHighlightWidth = 0.7;
+        [self insertSubview:shimmeringView belowSubview:self.textLabel];
+        shimmeringView.shimmering = YES;
+    }
+}
+
+- (void)configureTextlabel {
+    _textLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    _textLabel.textColor = [UIColor blackColor];
+    _textLabel.font = [UIFont systemFontOfSize:20];
+    _textLabel.backgroundColor = [UIColor clearColor];
+    _textLabel.alpha = 0;
+    [self addSubview:_textLabel];
+    [_textLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_textLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:_textLabel.superview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_textLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:_textLabel.superview attribute:NSLayoutAttributeCenterX multiplier:1.175 constant:1]];
+
+    [self configureShimmeringView];
 }
 
 - (void)didMoveToWindow {
@@ -57,8 +70,6 @@
 }
 
 - (void)toggleTextLabel:(id)sender {
-//    CGPoint sliderPosition = [self thumbRect].origin;
-//    NSLog(@"%s sliderPos: %@", __func__, NSStringFromCGPoint(sliderPosition));
     UISlider *s = (UISlider *) sender;
     if (s.value == 0)
         self.textLabel.alpha = 1;
